@@ -1,3 +1,12 @@
+# Quant Fi Visuliser - Read me to be updated
+The purpose of this app is to create a visualiser for some quant fi concepts coded in Python. The template repository can be found at 
+https://github.com/yaojiach/docker-dash. 
+
+
+The original README is below with the run instructions. This README will be updated when the project has some more legs.
+
+
+
 # Docker Dash (Plotly)
 
 Dockerize a Python Dash app for quick prototyping.

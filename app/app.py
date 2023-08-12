@@ -1,33 +1,22 @@
 import os
 from dash import Dash, html, dcc
-import plotly.express as px
-import pandas as pd
+import dash_bootstrap_components as dbc
+import components
+from callbacks import get_callbacks
 
 debug = False if os.environ["DASH_DEBUG_MODE"] == "False" else True
 
-app = Dash(__name__)
+
+app = Dash(__name__, external_stylesheets=[dbc.themes.ZEPHYR])
 
 server = app.server
 
-data = pd.DataFrame(
-    {
-        "Fruit": ["Apples", "Oranges", "Bananas", "Apples", "Oranges", "Bananas"],
-        "Amount": [4, 1, 2, 2, 4, 5],
-        "City": ["SF", "SF", "SF", "Montreal", "Montreal", "Montreal"],
-    }
-)
+content = html.Div(id="page-content", style=components.CONTENT_STYLE)
 
-graph = px.bar(data, x="Fruit", y="Amount", color="City", barmode="group")
+app.layout = html.Div([dcc.Location(id="url"), components.sidebar, content])
 
-app.layout = html.Div(
-    children=[
-        html.H1(
-            children=f"Hello Dash in 2022 from {'Dev Server' if debug else 'Prod Server'}"
-        ),
-        html.Div(children="""Dash: A web application framework for your data."""),
-        dcc.Graph(id="example-graph", figure=graph),
-    ]
-)
+
+get_callbacks(app)
 
 
 if __name__ == "__main__":

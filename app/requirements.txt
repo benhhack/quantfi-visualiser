@@ -1,4 +1,9 @@
 dash
-plotly
-pandas
+dash-bootstrap-components
 gunicorn
+matplotlib
+numpy
+pandas
+plotly
+scipy
+yfinance
