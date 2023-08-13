@@ -1,4 +1,5 @@
 from dash import Input, Output, State, html
+import marko_model
 
 
 
@@ -8,8 +9,8 @@ def get_callbacks(app):
     def render_page_content(pathname):
         if pathname == "/":
             return html.P("This is the content of the home page!")
-        elif pathname == "/page-1":
-            return html.P("This is the content of page 1. Yay!")
+        elif pathname == "/marko-model":
+            return marko_model.layout()
         elif pathname == "/page-2":
             return html.P("Oh cool, this is page 2!")
         # If the user tries to reach a different page, return a 404 message
@@ -21,3 +22,5 @@ def get_callbacks(app):
             ],
             className="p-3 bg-light rounded-3",
         )
+        
+        

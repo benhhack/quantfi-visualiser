@@ -3,6 +3,8 @@ import yfinance as yf
 import pandas as pd
 import matplotlib.pyplot as plt
 import scipy.optimize as optimisation
+import plotly.graph_objects as go
+
 
 
 class MarkoModel:
@@ -26,7 +28,7 @@ class MarkoModel:
         for stock in self.stocks:
             # closing prices
             ticker = yf.Ticker(stock)
-            stock_data[stock] = ticker.history(start=self.start_date, end=self.end_date)['Adj Close']
+            stock_data[stock] = ticker.history(start=self.start_date, end=self.end_date)['Close']
         return pd.DataFrame(stock_data)
 
     def show_data(self, data):
@@ -89,15 +91,46 @@ class MarkoModel:
                                      constraints=constr)
 
     def print_optimal_port(self, optimum, returns):
-        print("Optimal portfolio: ", optimum['x'].round(3))
-        print("Exp return, vol, Sharpe ratio: ", self.statistics(optimum['x'].round(3), returns))
+        # 1st dataframe: stock name and weighting
+        stock_weightings = pd.DataFrame({
+            'Stock Name': self.stocks,
+            'Weighting': optimum['x'].round(3)
+        })
+
+        details = self.statistics(optimum['x'].round(3), returns)
+        
+        # 2nd dataframe: exp return, exp vol, Sharpe ratio
+        details_df = pd.DataFrame({
+            'Detail': ['Expected Return', 'Expected Volatility', 'Sharpe Ratio'],
+            'Value': details
+        })
+
+        return stock_weightings, details_df
 
     def show_optimal_portfolio(self, opt, rets, portfolio_rets, portfolio_vols):
-        plt.figure(figsize=(10, 6))
-        plt.scatter(portfolio_vols, portfolio_rets, c=portfolio_rets / portfolio_vols, marker='o')
-        plt.grid = True
-        plt.xlabel('Expected Volatility')
-        plt.ylabel('Expected Returns')
-        plt.colorbar(label='Sharpe Ratio')
-        plt.plot(self.statistics(opt['x'], rets)[1], self.statistics(opt['x'], rets)[0], 'g*', markersize=20.)
-        plt.show()
+        fig = go.Figure()
+
+        # Scatter plot
+        fig.add_trace(go.Scatter(
+            x=portfolio_vols, 
+            y=portfolio_rets, 
+            mode='markers',
+            marker=dict(color=portfolio_rets/portfolio_vols, colorscale='Viridis', size=10, colorbar=dict(title='Sharpe Ratio'))
+        ))
+
+        # Optimal point
+        opt_stats = self.statistics(opt['x'], rets)
+        fig.add_trace(go.Scatter(
+            x=[opt_stats[1]], 
+            y=[opt_stats[0]], 
+            mode='markers', 
+            marker=dict(color='red', size=20), 
+            name='Optimal Point'
+        ))
+
+        fig.update_layout(
+            xaxis_title="Expected Volatility",
+            yaxis_title="Expected Returns",
+            title="Optimal Portfolio"
+        )
+        return fig

@@ -3,6 +3,7 @@ from dash import Dash, html, dcc
 import dash_bootstrap_components as dbc
 import components
 from callbacks import get_callbacks
+import marko_model
 
 debug = False if os.environ["DASH_DEBUG_MODE"] == "False" else True
 
@@ -17,6 +18,7 @@ app.layout = html.Div([dcc.Location(id="url"), components.sidebar, content])
 
 
 get_callbacks(app)
+marko_model.register_callbacks(app)
 
 
 if __name__ == "__main__":

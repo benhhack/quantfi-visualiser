@@ -30,7 +30,7 @@ sidebar = html.Div(
         dbc.Nav(
             [
                 dbc.NavLink("Home", href="/", active="exact"),
-                dbc.NavLink("Markowitz Model Portfolio Creator", href="/markomodel", active="exact"),
+                dbc.NavLink("Markowitz Model Portfolio Creator", href="/marko-model", active="exact"),
                 dbc.NavLink("TBD ", href="/page-2", active="exact"),
             ],
             vertical=True,
