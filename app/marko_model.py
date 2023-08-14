@@ -4,79 +4,91 @@ from QFClasses.markowitz_model import MarkoModel
 
 def layout():
     available_stocks = ["AAPL", "WMT", "TSLA", "GE", "AMZN", "DB"]
-    
-    return dbc.Container([
-        html.H1('Markowitz Model'),
-        html.P("""
-               The Modern Portfolio Theory (MPT) was intoduced by Harry Markowitz in 1952 with the aim of finding an optimal investent portfolio.
-               While a very simplistic approach, it is one that been widely used since and is still a foundation of investment theory.
-               MPT creates the most efficient portfolio through diversification. By including multiple, uncorrelated stocks in a portfolio to minimize specific risk while maximising return.
-               
-               The base example here combines 6 stocks and will build out a stock chooser.
-               """),
-        
-        # Dropdown for stock selection and DatePickers for date range
-        dbc.Row([
-            dbc.Col(
-                dcc.Dropdown(
-                    id='stock-dropdown',
-                    options=[{'label': stock, 'value': stock} for stock in available_stocks],
-                    multi=True,
-                    value=["AAPL", "WMT", "TSLA", "GE", "AMZN", "DB"],  # default values
-                    placeholder="Select stocks"
-                ),
-                width=4
-            ),
-            dbc.Col(
-                dcc.DatePickerSingle(
-                    id='start-date-picker',
-                    date='2012-01-01',
-                    display_format='YYYY-MM-DD',
-                    placeholder="Start Date"
-                ),
-                width=4
-            ),
-            dbc.Col(
-                dcc.DatePickerSingle(
-                    id='end-date-picker',
-                    date='2017-01-01',
-                    display_format='YYYY-MM-DD',
-                    placeholder="End Date"
-                ),
-                width=4
-            )
-        ], className='mb-3'),
 
-        # Button to generate graph
-        dbc.Row([
-            dbc.Col(
-                html.Button('Generate Graph', id='generate-graph', n_clicks=0),
-                width={"size": 2, "offset": 5}  # Center the button
-            )
-        ], className='mb-3'),
+    # Create a Card for the introduction and instructions
+    intro_card = dbc.Card(
+        dbc.CardBody([
+            html.H1('Markowitz Model'),
+            html.P("""
+                   The Modern Portfolio Theory (MPT) was introduced by Harry Markowitz in 1952 with the aim of finding an optimal investment portfolio.
+                   While a very simplistic approach, it is one that has been widely used since and is still a foundation of investment theory.
+                   MPT creates the most efficient portfolio through diversification. By including multiple, uncorrelated stocks in a portfolio to minimize specific risk while maximizing return.
 
-        # Graph
-        dbc.Row([
-            dbc.Col(
-                dcc.Graph(id='marko-graph', figure={}),
-                className='mb-3'
-            )
+                   The base example here combines 6 stocks and will build out a stock chooser.
+                   """),
         ]),
-        # optimal details
-        dbc.Row([
-        dbc.Col([
-            html.H5("Stock Weightings"),
-            html.Div(id='stock-weightings-table')
-        ])
-    ]),
+        className="mb-3"
+    )
 
-    dbc.Row([
-        dbc.Col([
-            html.H5("Portfolio Details"),
-            html.Div(id='details-table')
+    # Grouping dropdown and date pickers
+    selection_card = dbc.Card(
+        dbc.CardBody([
+            dbc.Row([
+                
+                dbc.Col([
+                    html.P("Choose which stocks you would like to include in your portfolio."),
+                    dcc.Dropdown(
+                        id='stock-dropdown',
+                        options=[{'label': stock, 'value': stock} for stock in available_stocks],
+                        multi=True,
+                        value=["AAPL", "WMT", "TSLA", "GE", "AMZN", "DB"],  # default values
+                        placeholder="Select stocks"
+                    )],
+                    width=6
+                ),
+                dbc.Col(html.P(), width=2),
+                dbc.Col(
+                    [html.P("Buy date:"),
+                        dcc.DatePickerSingle(
+                        id='start-date-picker',
+                        date='2012-01-01',
+                        display_format='YYYY-MM-DD',
+                        placeholder="Start Date"
+                    )],
+                    width=2
+                ),
+                dbc.Col(
+                    [html.P("Sell date:"),
+                        dcc.DatePickerSingle(
+                        id='end-date-picker',
+                        date='2017-01-01',
+                        display_format='YYYY-MM-DD',
+                        placeholder="End Date"
+                    )],
+                    width=2
+                )
+            ], className='mb-3')
+        ]),
+        className="mb-3"
+    )
+    
+    
+    output_graphs = dbc.Card(
+        dbc.CardBody([
+            dbc.Row(
+                [dbc.Col([
+                html.H5("Stock Weightings"),
+                html.Div(id='stock-weightings-table'),
+            ]),
+                dbc.Col([
+                html.H5("Portfolio Details"),
+                html.Div(id='details-table')
+            ]) 
+            ], className='mb-3')
         ])
-    ])
-    ])
+    )
+
+    return dbc.Container(
+        [
+            intro_card,
+            selection_card,
+            dbc.Button('Generate Graph', id='generate-graph', color="primary", className="w-20"),
+            dcc.Graph(id='marko-graph', figure={}),
+            output_graphs
+        ],
+        fluid=True,
+        style={"padding": "20px", "backgroundColor": "#EAE3E5"}  # Light background color
+    )
 
 def register_callbacks(app):
     @app.callback(
@@ -117,6 +129,6 @@ def register_callbacks(app):
         )
 
         stock_weightings_table = dbc.Table.from_dataframe(stock_weightings, striped=True, bordered=True, hover=True)
-        details_table = dbc.Table.from_dataframe(details_df, striped=True, bordered=True, hover=True)
+        details_table = dbc.Table.from_dataframe(details_df, striped=True, bordered=True, hover=True, color="secondary")
 
         return graph_figure, stock_weightings_table, details_table

@@ -8,7 +8,7 @@ import marko_model
 debug = False if os.environ["DASH_DEBUG_MODE"] == "False" else True
 
 
-app = Dash(__name__, external_stylesheets=[dbc.themes.ZEPHYR])
+app = Dash(__name__, external_stylesheets=[dbc.themes.ZEPHYR, "assets/bootstrap.css"])
 
 server = app.server
 

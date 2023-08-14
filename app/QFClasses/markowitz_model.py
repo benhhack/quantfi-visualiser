@@ -94,7 +94,7 @@ class MarkoModel:
         # 1st dataframe: stock name and weighting
         stock_weightings = pd.DataFrame({
             'Stock Name': self.stocks,
-            'Weighting': optimum['x'].round(3)
+            'Weighting': [f"{val.round(3)*100}%" for val in optimum['x']]
         })
 
         details = self.statistics(optimum['x'].round(3), returns)
@@ -102,7 +102,7 @@ class MarkoModel:
         # 2nd dataframe: exp return, exp vol, Sharpe ratio
         details_df = pd.DataFrame({
             'Detail': ['Expected Return', 'Expected Volatility', 'Sharpe Ratio'],
-            'Value': details
+            'Value': [f"{details[0].round(3)*100}%", f"{details[1].round(3)*100}%", f"{details[2].round(3)}",]
         })
 
         return stock_weightings, details_df

@@ -9,7 +9,7 @@ SIDEBAR_STYLE = {
     "bottom": 0,
     "width": "18rem",
     "padding": "2rem 1rem",
-    "background-color": "#f8f9fa",
+    "background-color": "#EAC6B4",
 }
 
 # the styles for the main content position it to the right of the sidebar and
@@ -17,7 +17,8 @@ SIDEBAR_STYLE = {
 CONTENT_STYLE = {
     "margin-left": "18rem",
     "margin-right": "2rem",
-    "padding": "2rem 1rem",
+    "padding": "0rem 0.5rem",
+    "background-color": "#f8f9fa"
 }
 
 sidebar = html.Div(
