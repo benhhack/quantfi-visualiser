@@ -1,6 +1,7 @@
 import dash_bootstrap_components as dbc
 from dash import Input, Output, html, dcc, State, no_update
 from QFClasses.markowitz_model import MarkoModel
+from components import CARD_STYLE
 
 def layout():
     available_stocks = ["AAPL", "WMT", "TSLA", "GE", "AMZN", "DB"]
@@ -17,7 +18,8 @@ def layout():
                    The base example here combines 6 stocks and will build out a stock chooser.
                    """),
         ]),
-        className="mb-3"
+        className="mb-3",
+        style=CARD_STYLE
     )
 
     # Grouping dropdown and date pickers
@@ -59,7 +61,8 @@ def layout():
                 )
             ], className='mb-3')
         ]),
-        className="mb-3"
+        className="mb-3",
+        style=CARD_STYLE
     )
     
     
@@ -75,7 +78,8 @@ def layout():
                 html.Div(id='details-table')
             ]) 
             ], className='mb-3')
-        ])
+        ]),
+        style=CARD_STYLE
     )
 
     return dbc.Container(
@@ -87,7 +91,7 @@ def layout():
             output_graphs
         ],
         fluid=True,
-        style={"padding": "20px", "backgroundColor": "#EAE3E5"}  # Light background color
+        style={"padding": "20px", "backgroundColor": "#CDEAD6"}  # Light background color
     )
 
 def register_callbacks(app):
@@ -129,6 +133,6 @@ def register_callbacks(app):
         )
 
         stock_weightings_table = dbc.Table.from_dataframe(stock_weightings, striped=True, bordered=True, hover=True)
-        details_table = dbc.Table.from_dataframe(details_df, striped=True, bordered=True, hover=True, color="secondary")
+        details_table = dbc.Table.from_dataframe(details_df, striped=True, bordered=True, hover=True, style={"color": "#D9F6CC"})
 
         return graph_figure, stock_weightings_table, details_table

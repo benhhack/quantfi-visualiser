@@ -9,7 +9,7 @@ SIDEBAR_STYLE = {
     "bottom": 0,
     "width": "18rem",
     "padding": "2rem 1rem",
-    "background-color": "#EAC6B4",
+    "background-color": "#B0D4B1",
 }
 
 # the styles for the main content position it to the right of the sidebar and
@@ -17,8 +17,12 @@ SIDEBAR_STYLE = {
 CONTENT_STYLE = {
     "margin-left": "18rem",
     "margin-right": "2rem",
-    "padding": "0rem 0.5rem",
-    "background-color": "#f8f9fa"
+    "padding": "0rem 0rem",
+    "background-color": "#C2E4E9"
+}
+
+CARD_STYLE = {
+    "background-color": "#B0D4C5"
 }
 
 sidebar = html.Div(
