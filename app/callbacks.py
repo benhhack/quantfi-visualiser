@@ -1,5 +1,5 @@
 from dash import Input, Output, State, html
-import marko_model
+import marko_model, intro_page
 
 
 
@@ -8,7 +8,7 @@ def get_callbacks(app):
     @app.callback(Output("page-content", "children"), [Input("url", "pathname")])
     def render_page_content(pathname):
         if pathname == "/":
-            return html.P("This is the content of the home page!")
+            return intro_page.intro_layout()
         elif pathname == "/marko-model":
             return marko_model.layout()
         elif pathname == "/page-2":
