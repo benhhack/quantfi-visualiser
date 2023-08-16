@@ -127,10 +127,12 @@ class MarkoModel:
             marker=dict(color='red', size=20), 
             name='Optimal Point'
         ))
-
+        
         fig.update_layout(
-            xaxis_title="Expected Volatility",
-            yaxis_title="Expected Returns",
-            title="Optimal Portfolio"
-        )
+        xaxis_title="Expected Volatility",
+        yaxis_title="Expected Returns",
+        title="Optimal Portfolio",
+        # plot_bgcolor="#CDEAD6",  # Change this color if needed
+        paper_bgcolor="#CDEAD6"
+    )
         return fig

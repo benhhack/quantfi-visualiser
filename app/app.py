@@ -12,6 +12,8 @@ app = Dash(__name__, external_stylesheets=[dbc.themes.ZEPHYR, "assets/bootstrap.
 
 server = app.server
 
+app.config.suppress_callback_exceptions = True
+
 content = html.Div(id="page-content", style=components.CONTENT_STYLE)
 
 app.layout = html.Div([dcc.Location(id="url"), components.sidebar, content])

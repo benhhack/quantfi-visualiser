@@ -87,8 +87,16 @@ def layout():
             intro_card,
             selection_card,
             dbc.Button('Generate Graph', id='generate-graph', color="primary", className="w-20"),
-            dcc.Graph(id='marko-graph', figure={}),
-            output_graphs
+            
+            # Wrapping the components with dcc.Loading
+            dcc.Loading(
+                id="loading",
+                type="cube",  # can be "default", "circle", "dot", or "cube"
+                children=[
+                    dcc.Graph(id='marko-graph', figure={}, style={"width": "70%", "height": "400px", "margin": "auto"}),
+                    output_graphs
+                ]
+            )
         ],
         fluid=True,
         style={"padding": "20px", "backgroundColor": "#CDEAD6"}  # Light background color
